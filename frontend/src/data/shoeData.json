@@ -1,0 +1,66 @@
+[
+  {
+    "shoeType": "WORK SHOE",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe1.png"
+  },
+  {
+    "shoeType": "WOMEN CASUAL",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe2.png"
+  },
+  {
+    "shoeType": "MEN CASUAL",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe3.png"
+  },
+  {
+    "shoeType": "WOMEN CASUAL",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe4.png"
+  },
+  {
+    "shoeType": "WOMEN CASUAL",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe5.png"
+  },
+  {
+    "shoeType": "MEN CASUAL",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe2.png"
+  },
+  {
+    "shoeType": "UNISEX CASUAL",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe1.png"
+  },
+  {
+    "shoeType": "MEN CASUAL",
+    "price": "$299.43",
+    "originalPrice": "$534.33",
+    "discount": "24% Off",
+    "rating": "4",
+    "image": "shoe3.png"
+  }
+]
