@@ -41,7 +41,10 @@ const Login = () => {
       description: "Welcome back! You have been logged in successfully.",
     });
     // Navigate to dashboard or home after successful login
-    navigate("/");
+    localStorage.setItem("data", JSON.stringify(data));
+    setTimeout(() => {
+      navigate("/admin");
+    }, 1000);
   };
 
   return (

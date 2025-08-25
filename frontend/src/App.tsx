@@ -15,6 +15,7 @@ import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import NotFound from "./not-found";
 import Checkout from "./pages/checkout/checkout";
+import ProtectedRoute from "./pages/protectedRoute/protectedRoute";
 export default function App() {
   return (
     <Routes>
@@ -26,7 +27,14 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
       </Route>
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<AdminDashboard />} />
         <Route path="products" element={<ProductManagement />} />
         <Route path="orders" element={<OrderManagement />} />
