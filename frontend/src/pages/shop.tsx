@@ -13,9 +13,9 @@ import Cards from "@/components/card";
 export default function Shop() {
   return (
     <>
-      <div className="mt-10 grid grid-cols-5 gap-x-4">
-        <div className="col-span-1  ">
-          <div className="bg-gray-100 px-4 py-2">
+      <div className="mt-10 grid lg:grid-cols-5 gap-4">
+        <div className="col-span-1  flex flex-col sm:flex-row lg:flex-col gap-6 order-1 lg:order-0 px-12 sm:px-0">
+          <div className="bg-gray-100 px-4 py-2 ">
             <p className="font-bold text-[1.2em] my-2">PRICES</p>
             <p className="flex justify-between">
               <span>Ranger:</span>
@@ -24,7 +24,7 @@ export default function Shop() {
             <img src="/slider.png" className="mt-4" />
           </div>
 
-          <div className="mt-12 bg-gray-100 px-4 py-2 pb-6">
+          <div className=" lg:mt-12 bg-gray-100 px-4 py-2 pb-6 ">
             <p className="mt-2 mb-4">COLOR</p>
             <div className="flex justify-between">
               <div className="p-1 border-blue-400 border  rounded-full">
@@ -48,12 +48,12 @@ export default function Shop() {
             </div>
           </div>
         </div>
-        <div className="bg-[#4440FF] px-12 text-white grid grid-cols-2 items-center  py-6 col-span-4">
-          <div className="flex flex-col pl-12 ">
-            <p className="text-[3em] font-semibold ">
+        <div className="bg-[#4440FF] px-6 lg:px-12 text-white grid lg:grid-cols-2 items-center  py-6 col-span-4">
+          <div className="flex flex-col pl-6 lg:pl-12 ">
+            <p className="text-[1.8em] lg:text-[3em] font-semibold ">
               New balance Men Running Sneakers
             </p>
-            <p className="text-[1.4em]">
+            <p className="text-[1.1em] lg:text-[1.4em]">
               Shoes that transform your body language and attitude.
             </p>
             <Button
@@ -63,24 +63,27 @@ export default function Shop() {
               SHOP NOW
             </Button>
           </div>
-          <div className="-mt-18">
+          <div className="mx-auto w-[50%] lg:w-full lg:-mt-18">
             <img src="./big-shoes.png" />
           </div>
         </div>
       </div>
 
-      <div className="mt-10 grid grid-cols-5 gap-x-4">
-        <Button variant={"secondary"} className="py-6 col-span-1 bg-amber-400">
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-5 gap-4">
+        <Button
+          variant={"secondary"}
+          className="py-6 col-span-1 bg-amber-400 w-[200px] text-white sm:w-auto"
+        >
           MORE
         </Button>
 
         <div className="col-span-4  ">
           <div className="flex justify-between items-center bg-gray-100 px-4">
-            <div className="flex justify-between max-w-[600px] w-full items-center">
+            <div className="flex justify-between max-w-[600px] w-full items-center text-[0.8em] sm:text-[1em]">
               <p>13 Items</p>
 
               <div className="flex gap-x-5 items-center">
-                <p>Sort By</p>
+                <p className="hidden sm:block">Sort By</p>
                 <Select>
                   <SelectTrigger className="w-fit">
                     <SelectValue placeholder="Name" />
@@ -94,7 +97,7 @@ export default function Shop() {
               </div>
 
               <div className="flex gap-x-5 items-center">
-                <p>Show</p>
+                <p className="hidden sm:block">Show</p>
                 <Select>
                   <SelectTrigger className="w-fit">
                     <SelectValue placeholder="12" />
@@ -118,7 +121,7 @@ export default function Shop() {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-4 mt-12">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
             {data.map(
               (
                 {
