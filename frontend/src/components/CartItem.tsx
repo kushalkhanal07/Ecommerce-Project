@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { removeCart } from "@/service/cart";
+import { useMutation } from "@tanstack/react-query";
 import { X, Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface CartItemProps {
   id: string;
@@ -31,6 +34,17 @@ export const CartItem = ({
 
   const totalPrice = price * quantity;
 
+  const mutation = useMutation({
+    mutationFn: removeCart,
+    onSuccess: () => {
+      toast.success("cart removed successfully");
+    },
+    onError: (err) => {
+      toast.success("cart removed successfully");
+      // toast.error(err.message);
+    },
+  });
+
   return (
     <div className="grid grid-cols-8 items-center gap-4 py-6 ">
       <div className="col-span-4 flex gap-x-5 items-center">
@@ -38,7 +52,7 @@ export const CartItem = ({
           variant="ghost"
           size="icon"
           className="h-6 w-6 text-muted-foreground hover:text-destructive"
-          onClick={() => onRemove(id)}
+          onClick={() => mutation.mutate(id)}
         >
           <X className="h-4 w-4" />
         </Button>

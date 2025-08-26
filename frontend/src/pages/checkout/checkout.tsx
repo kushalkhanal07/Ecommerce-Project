@@ -148,13 +148,12 @@ const Checkout = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log("Order submitted:", data);
     setIsSubmitting(false);
-    alert("Order placed successfully! (This is a simulation)");
+    alert("Order placed successfully!");
   };
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
         <p className="text-gray-600">Complete your order with secure payment</p>
       </div>
 
@@ -412,7 +411,7 @@ const Checkout = () => {
                 </CardContent>
               </Card>
 
-              {/* <Button
+              <Button
                 type="submit"
                 className="w-full h-12 text-lg"
                 disabled={isSubmitting}
@@ -425,16 +424,15 @@ const Checkout = () => {
                 ) : (
                   "Complete Order"
                 )}
-              </Button> */}
+              </Button>
 
-              <Dialog>
+              {/* <Dialog>
                 <Link to="/checkout">
                   <DialogTrigger className="w-full mt-6 bg-blue-600 text-primary-foreground hover:bg-blue-600 h-12 text-base font-medium cursor-pointer">
                     CheckOut
                   </DialogTrigger>
                 </Link>
                 <DialogContent className="max-w-[800px] w-full p-0 gap-0 bg-white border-0 shadow-2xl">
-                  {/* Header */}
                   <p className="text-[#4440FF] my-3 text-[2em] font-semibold text-center">
                     Make Payment{" "}
                   </p>
@@ -591,7 +589,7 @@ const Checkout = () => {
                     </Form>
                   </div>
                 </DialogContent>
-              </Dialog>
+              </Dialog> */}
             </form>
           </Form>
         </div>

@@ -25,8 +25,17 @@ export default function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/product" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
       </Route>
+
+      {/** Admin Routes */}
       <Route
         path="/admin"
         element={

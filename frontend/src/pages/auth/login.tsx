@@ -43,7 +43,7 @@ const Login = () => {
     // Navigate to dashboard or home after successful login
     localStorage.setItem("data", JSON.stringify(data));
     setTimeout(() => {
-      navigate("/admin");
+      navigate("/checkout");
     }, 1000);
   };
 
