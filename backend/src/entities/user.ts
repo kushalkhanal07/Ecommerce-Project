@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Order } from "./order";
 
 @Entity("users")
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: string;
 
   @Column({ type: "varchar", length: 200 })
@@ -28,4 +29,8 @@ export class User {
 
   @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   updatedAt!: Date;
+
+  // relation with orders
+  @OneToMany(() => Order, (order) => order.user)
+  orders!: Order[];
 }

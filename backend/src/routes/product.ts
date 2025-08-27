@@ -6,10 +6,11 @@ import {
     getProductBySlug,
     updateProduct,
 } from "../controller/product";
+import upload from "../config/upload";
 
 
 const router = express.Router();
-router.post("/add", addProduct);
+router.post("/add", upload.fields([{ name: "image" }]), addProduct);
 router.get("/", getProducts);
 router.get("/by-slug/:slug", getProductBySlug);
 router.patch("/update/:id", updateProduct);

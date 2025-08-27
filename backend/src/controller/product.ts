@@ -12,9 +12,9 @@ const generateSlug = (name: string): string => {
 
 export const addProduct = async (req: Request, res: Response) => {
   const productRepo = AppDataSource.getRepository(Product);
-  const { name, price, description } = req.body;
+  const { name, price, description, brand, size, stock } = req.body;
   try {
-    if (!name || !price || !description) {
+    if (!name || !price || !description || !brand || !size) {
       return res.status(400).send({
         success: false,
         message: "All fields are required",
@@ -32,17 +32,35 @@ export const addProduct = async (req: Request, res: Response) => {
       });
     }
 
+    // Handle image upload (multer stores files in req.files)
+    let images: string[] = [];
+    const PORT = process.env.PORT || 5000;
+    const baseUrl = req.protocol + '://' + req.get('host');
+    if (req.files && (req.files as any).image) {
+      const imageFiles = (req.files as any).image;
+      if (Array.isArray(imageFiles)) {
+        images = imageFiles.map((file: any) => `${baseUrl}/uploads/${file.filename}`);
+      } else {
+        images = [`${baseUrl}/uploads/${imageFiles.filename}`];
+      }
+    }
+
     const newProduct = productRepo.create({
       name,
       price,
       description,
+      brand,
+      size: typeof size === "string" ? JSON.parse(size) : size,
+      stock: stock ? Number(stock) : 0,
       slug,
+      images,
     });
 
     await productRepo.save(newProduct);
     return res.status(201).send({
       success: true,
       message: "Product added successfully",
+      data: newProduct,
     });
   } catch (err) {
     return res.status(500).send({

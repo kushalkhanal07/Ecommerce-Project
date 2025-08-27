@@ -21,7 +21,7 @@ export class Product {
 
   // sizes for variant
   @Column({
-    type: "jsonb",
+    type: "varchar",
     length: 100,
     nullable: false,
   })
@@ -43,7 +43,7 @@ export class Product {
 
   // images array
   @Column({
-    type: "jsonb",
+    type: "varchar",
     nullable: false,
   })
   images!: string[];

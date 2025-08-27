@@ -7,9 +7,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  JoinColumn,
 } from "typeorm";
 import { IOrderAddress } from "../interface/IOrder";
-
+import { User } from "./user";
+import { OrderItem } from "./orderItem";
 
 export enum orderStatus {
   PENDING = "pending",
@@ -18,7 +20,6 @@ export enum orderStatus {
   CANCELLED = "cancelled",
   REFUNDED = "refunded",
 }
-
 
 @Entity("orders")
 export class Order {
@@ -41,6 +42,8 @@ export class Order {
 
   @Column({
     type: "numeric",
+    precision: 10,
+    scale: 2,
     nullable: false,
   })
   totalAmount!: number;
@@ -49,16 +52,32 @@ export class Order {
     type: "varchar",
     length: 200,
     nullable: false,
+    default: orderStatus.PENDING,
   })
   status!: orderStatus;
 
   @Column({
     name: "shipping_address",
-    type: "jsonb",
+    type: "json",
     nullable: false,
   })
   shippingAddress!: IOrderAddress;
 
+  @Column({
+    type: "varchar",
+    length: 500,
+    nullable: false,
+  })
+  paymentMethod!: string;
+
+  // order by relation with user
+  @ManyToOne(() => User, (user) => user.orders)
+  @JoinColumn({ name: "user_id" })
+  user!: User;
+
+  // order items relation
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
+  items!: OrderItem[];
 
   @CreateDateColumn()
   created_at!: Date;
@@ -68,5 +87,4 @@ export class Order {
 
   @DeleteDateColumn()
   deleted_at!: Date;
-
 }
