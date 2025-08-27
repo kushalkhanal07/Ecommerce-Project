@@ -1,8 +1,7 @@
-
-import { Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity("users")
-export class User{
+export class User {
   @PrimaryGeneratedColumn()
   id!: string;
 
@@ -24,10 +23,9 @@ export class User{
   @Column({ type: "varchar", length: 45, nullable: true })
   lastLoginIp!: string;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   createdAt!: Date;
 
-  @Column({ type: "timestamp" })
+  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
   updatedAt!: Date;
-
 }

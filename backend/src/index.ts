@@ -3,19 +3,26 @@ import express from "express";
 import path from "path";
 import baseRouter from "./routes/index";
 import BodyParser from "body-parser";
-import Cors from "cors"
+import Cors from "cors";
 import fs from "fs";
 
+console.log("database connecting...");
 const startApp = async () => {
   const app = express();
+
   app.use(BodyParser.json());
   app.use(BodyParser.urlencoded({ extended: true }));
 
-  app.use(Cors());
-  
+  app.use(
+    Cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+    })
+  );
 
   // Database connection
   await connectDatabase();
+  console.log("connection successfull");
 
   const uploadsDir = path.join(__dirname, "../uploads");
   if (!fs.existsSync(uploadsDir)) {
