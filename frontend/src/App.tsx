@@ -16,6 +16,9 @@ import Register from "./pages/auth/register";
 import NotFound from "./not-found";
 import Checkout from "./pages/checkout/checkout";
 import ProtectedRoute from "./pages/protectedRoute/protectedRoute";
+import AdminLogin from "./pages/auth/adminLogin";
+import AdminRegister from "./pages/auth/adminRegister";
+import AdminProtectedRoute from "./pages/protectedRoute/AdminProtectedRoute";
 export default function App() {
   return (
     <Routes>
@@ -39,9 +42,9 @@ export default function App() {
       <Route
         path="/admin"
         element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout />
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         }
       >
         <Route index element={<AdminDashboard />} />
@@ -52,6 +55,8 @@ export default function App() {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/admin/register" element={<AdminRegister />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

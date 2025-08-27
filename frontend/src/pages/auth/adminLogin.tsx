@@ -21,9 +21,9 @@ import {
 import { LoginFormData, loginSchema } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import { userLogin } from "@/service/auth/login";
+import { adminLogin, userLogin } from "@/service/auth/login";
 
-const Login = () => {
+const AdminLogin = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -36,13 +36,13 @@ const Login = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: userLogin,
+    mutationFn: adminLogin,
     onSuccess: (data) => {
       console.log(data);
-      localStorage.setItem("user", data.success);
+      localStorage.setItem("admin", data.success);
 
       toast({
-        title: "User Login Successful",
+        title: "Admin Login Successful",
         description: "Welcome back! You have been logged in successfully.",
       });
     },
@@ -61,7 +61,7 @@ const Login = () => {
 
     // Navigate to dashboard or home after successful login
     setTimeout(() => {
-      navigate("/checkout");
+      navigate("/admin");
     }, 1000);
   };
 
@@ -70,11 +70,8 @@ const Login = () => {
       <Card className="w-full max-w-md backdrop-blur-lg bg-glass-bg border-glass-border shadow-2xl">
         <CardHeader className="text-center space-y-1">
           <CardTitle className="text-2xl font-bold text-auth-card-foreground">
-            Welcome Back
+            Admin Login
           </CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Enter your credentials to access your account
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -128,7 +125,7 @@ const Login = () => {
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
               <Link
-                to="/register"
+                to="/admin/register"
                 className="font-medium text-auth-accent hover:underline transition-colors"
               >
                 Sign up
@@ -141,4 +138,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

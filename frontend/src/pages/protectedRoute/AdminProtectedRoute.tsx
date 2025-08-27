@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-export default function ProtectedRoute({ children }: any) {
+export default function AdminProtectedRoute({ children }: any) {
   const [isLoading, setLoading] = useState(false);
-  const data = localStorage.getItem("user") || "";
+  const data = localStorage.getItem("admin") || "";
   useEffect(() => {
     setLoading(true);
   }, []);
-
+  console.log(data);
   if (!isLoading) {
     return <div>Loading...</div>;
   }
 
-  return data ? children : <Navigate to="/login" />;
+  return data ? children : <Navigate to="/admin/login" />;
 }

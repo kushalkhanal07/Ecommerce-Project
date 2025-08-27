@@ -2,7 +2,7 @@ import { AppDataSource } from '../config/database';
 import { Admin } from '../entities';
 import { User } from '../entities/user';
 import { Request, Response } from 'express';
-
+import jwt from 'jsonwebtoken';
 
 export const registerAdmin = async(req:Request,res:Response)=>{
     const admin = AppDataSource.getRepository(Admin);
@@ -80,10 +80,21 @@ export const registerAdmin = async(req:Request,res:Response)=>{
           message: "Invalid email or password"
         });
       }
-
+      const token = jwt.sign(
+        { id: existingAdmin.id },
+        process.env.JWT_SECRET as string,
+        { expiresIn: "1h" }
+      );
       return res.status(200).send({
         success: true,
-        message: "Admin logged in successfully"
+        message: "Admin logged in successfully",
+        admin: {
+          id: existingAdmin.id,
+          email: existingAdmin.email,
+          name: existingAdmin.name,
+          phoneNumber: existingAdmin.PhoneNumber
+        },
+        token: token
       });
     } catch (err) {
       return res.status(500).send({
