@@ -5,6 +5,17 @@ import baseRouter from "./routes/index";
 import BodyParser from "body-parser";
 import Cors from "cors";
 import fs from "fs";
+import { Admin, User } from "./entities";
+
+// global interface
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User;
+      admin?: Admin;
+    }
+  }
+}
 
 console.log("database connecting...");
 const startApp = async () => {
