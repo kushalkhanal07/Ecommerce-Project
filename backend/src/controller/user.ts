@@ -49,7 +49,7 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   const user = AppDataSource.getRepository(User);
   const { email, password } = req.body;
-
+  console.log({ email, password });
   try {
     if (!email || !password) {
       return res.status(400).send({
@@ -94,7 +94,8 @@ export const loginUser = async (req: Request, res: Response) => {
       },
       token: token,
     });
-  } catch (err) {
+  } catch (err: any) {
+    console.log(err);
     return res.status(500).send({
       success: false,
       message: "Internal server error",
