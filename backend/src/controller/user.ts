@@ -102,3 +102,12 @@ export const loginUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getUser = async (req: Request, res: Response) => {
+  const user = AppDataSource.getRepository(User);
+  const allUser = await user.find();
+  const users = allUser.map(({ id, name, email, phoneNumber }) => {
+    return { id, name, email, phoneNumber };
+  });
+  return res.status(200).send(users);
+};
