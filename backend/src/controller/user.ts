@@ -121,3 +121,30 @@ export const getUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getCustomerProfile = async (req: Request, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).send({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        phoneNumber: user.phoneNumber,
+      },
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
