@@ -13,6 +13,21 @@ export class Product {
   name!: string;
 
   @Column({
+    type: "varchar",
+    length: 100,
+    nullable: false,
+  })
+  brand!: string;
+
+  // sizes for variant
+  @Column({
+    type: "jsonb",
+    length: 100,
+    nullable: false,
+  })
+  size!: string[];
+
+  @Column({
     type: "text",
     nullable: false,
   })
@@ -25,6 +40,13 @@ export class Product {
     nullable: false,
   })
   price!: number;
+
+  // images array
+  @Column({
+    type: "jsonb",
+    nullable: false,
+  })
+  images!: string[];
 
   @Column({
     type: "varchar",
