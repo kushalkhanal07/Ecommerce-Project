@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Eye, Mail, Phone } from "lucide-react";
+import { Search, Eye, Mail, Phone, Loader } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +19,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCustomer } from "@/service/customer";
 
 // Mock data for customers
 const mockCustomers = [
@@ -86,42 +88,61 @@ const mockCustomers = [
 ];
 
 const CustomerManagement = () => {
-  const [customers, setCustomers] = useState(mockCustomers);
+  // const [customers, setCustomers] = useState(mockCustomers);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
 
-  const filteredCustomers = customers.filter(
-    (customer) =>
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["customers"],
+    queryFn: getAllCustomer,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
+
+  console.log(data);
+
+  const filteredCustomers = data?.filter(
+    (customer: any) =>
       customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.id.toLowerCase().includes(searchTerm.toLowerCase())
+      customer.id.toString().includes(searchTerm)
   );
 
-  const getStatusColor = (status: any) => {
-    switch (status.toLowerCase()) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      case "inactive":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  // const getStatusColor = (status: any) => {
+  //   switch (status?.toLowerCase()) {
+  //     case "active":
+  //       return "bg-green-100 text-green-800";
+  //     case "inactive":
+  //       return "bg-red-100 text-red-800";
+  //     default:
+  //       return "bg-gray-100 text-gray-800";
+  //   }
+  // };
 
-  const getOrderStatusColor = (status: any) => {
-    switch (status.toLowerCase()) {
-      case "delivered":
-        return "bg-green-100 text-green-800";
-      case "shipped":
-        return "bg-blue-100 text-blue-800";
-      case "processing":
-        return "bg-yellow-100 text-yellow-800";
-      case "pending":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  // const getOrderStatusColor = (status: any) => {
+  //   switch (status.toLowerCase()) {
+  //     case "delivered":
+  //       return "bg-green-100 text-green-800";
+  //     case "shipped":
+  //       return "bg-blue-100 text-blue-800";
+  //     case "processing":
+  //       return "bg-yellow-100 text-yellow-800";
+  //     case "pending":
+  //       return "bg-red-100 text-red-800";
+  //     default:
+  //       return "bg-gray-100 text-gray-800";
+  //   }
+  // };
 
   return (
     <div className="p-6 space-y-6">
@@ -151,175 +172,35 @@ const CustomerManagement = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Id</TableHead>
                 <TableHead>Customer</TableHead>
                 <TableHead>Contact</TableHead>
-                <TableHead>Join Date</TableHead>
-                <TableHead>Orders</TableHead>
-                <TableHead>Total Spent</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>Email</TableHead>
+                {/* <TableHead>Actions</TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredCustomers.map((customer) => (
+              {filteredCustomers.map((customer: any) => (
                 <TableRow key={customer.id}>
                   <TableCell>
                     <div>
-                      <p className="font-medium">{customer.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {customer.id}
-                      </p>
+                      <p className="font-medium">{customer.id}</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="space-y-1">
                       <div className="flex items-center text-sm">
-                        <Mail className="h-3 w-3 mr-1" />
-                        {customer.email}
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Phone className="h-3 w-3 mr-1" />
-                        {customer.phone}
+                        {customer.name}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>{customer.joinDate}</TableCell>
-                  <TableCell>{customer.totalOrders}</TableCell>
-                  <TableCell>${customer.totalSpent.toFixed(2)}</TableCell>
                   <TableCell>
-                    <Badge className={getStatusColor(customer.status)}>
-                      {customer.status}
-                    </Badge>
+                    <div className="flex items-center text-sm">
+                      <Phone className="h-3 w-3 mr-1" />
+                      {customer?.phoneNumber}
+                    </div>
                   </TableCell>
-                  <TableCell>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setSelectedCustomer(customer)}
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          View Details
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-                        <DialogHeader>
-                          <DialogTitle>
-                            Customer Details - {selectedCustomer?.name}
-                          </DialogTitle>
-                        </DialogHeader>
-                        {selectedCustomer && (
-                          <div className="space-y-6">
-                            {/* Customer Information */}
-                            <div>
-                              <h3 className="font-semibold mb-3">
-                                Customer Information
-                              </h3>
-                              <div className="bg-muted/50 p-4 rounded-lg space-y-2">
-                                <p>
-                                  <strong>Customer ID:</strong>{" "}
-                                  {selectedCustomer.id}
-                                </p>
-                                <p>
-                                  <strong>Name:</strong> {selectedCustomer.name}
-                                </p>
-                                <p>
-                                  <strong>Email:</strong>{" "}
-                                  {selectedCustomer.email}
-                                </p>
-                                <p>
-                                  <strong>Phone:</strong>{" "}
-                                  {selectedCustomer.phone}
-                                </p>
-                                <p>
-                                  <strong>Address:</strong>{" "}
-                                  {selectedCustomer.address}
-                                </p>
-                                <p>
-                                  <strong>Join Date:</strong>{" "}
-                                  {selectedCustomer.joinDate}
-                                </p>
-                                <p>
-                                  <strong>Status:</strong>
-                                  <Badge
-                                    className={`ml-2 ${getStatusColor(
-                                      selectedCustomer.status
-                                    )}`}
-                                  >
-                                    {selectedCustomer.status}
-                                  </Badge>
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Order Statistics */}
-                            <div>
-                              <h3 className="font-semibold mb-3">
-                                Order Statistics
-                              </h3>
-                              <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-muted/50 p-4 rounded-lg text-center">
-                                  <p className="text-2xl font-bold">
-                                    {selectedCustomer.totalOrders}
-                                  </p>
-                                  <p className="text-sm text-muted-foreground">
-                                    Total Orders
-                                  </p>
-                                </div>
-                                <div className="bg-muted/50 p-4 rounded-lg text-center">
-                                  <p className="text-2xl font-bold">
-                                    ${selectedCustomer.totalSpent.toFixed(2)}
-                                  </p>
-                                  <p className="text-sm text-muted-foreground">
-                                    Total Spent
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Recent Orders */}
-                            <div>
-                              <h3 className="font-semibold mb-3">
-                                Recent Orders
-                              </h3>
-                              <div className="space-y-2">
-                                {selectedCustomer.recentOrders.map(
-                                  (order: any, index: any) => (
-                                    <div
-                                      key={index}
-                                      className="flex justify-between items-center p-3 border rounded-lg"
-                                    >
-                                      <div>
-                                        <p className="font-medium">
-                                          {order.id}
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">
-                                          {order.date}
-                                        </p>
-                                      </div>
-                                      <div className="text-right">
-                                        <p className="font-medium">
-                                          ${order.total.toFixed(2)}
-                                        </p>
-                                        <Badge
-                                          className={getOrderStatusColor(
-                                            order.status
-                                          )}
-                                        >
-                                          {order.status}
-                                        </Badge>
-                                      </div>
-                                    </div>
-                                  )
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </DialogContent>
-                    </Dialog>
-                  </TableCell>
+                  <TableCell>{customer.email}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

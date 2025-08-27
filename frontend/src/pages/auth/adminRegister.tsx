@@ -11,25 +11,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
-import { adminRegister, userRegister } from "@/service/auth/login";
+import { adminRegister } from "@/service/auth/login";
 import { z } from "zod";
 import { registerSchema } from "@/lib/auth";
+import { toast } from "sonner";
 
 // Updated schema with phone number validation
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
 
 const AdminRegister = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   const form = useForm<RegisterFormData>({
@@ -50,18 +43,14 @@ const AdminRegister = () => {
   const mutation = useMutation({
     mutationFn: adminRegister,
     onSuccess: () => {
-      toast({
-        title: "Registration Successful",
-        description: "Your account has been created successfully.",
+      toast.success("User Login Successful", {
+        description: "Welcome back! You have been logged in successfully.",
       });
       navigate("/admin/login");
     },
     onError: (error: any) => {
-      toast({
-        title: "Registration Failed",
-        description:
-          error.response?.data?.message ||
-          "An error occurred during registration.",
+      toast.error("Registration Failed", {
+        description: "Invalid credentials. Please try again.",
       });
     },
   });

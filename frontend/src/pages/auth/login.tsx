@@ -19,12 +19,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { LoginFormData, loginSchema } from "@/lib/auth";
-import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { userLogin } from "@/service/auth/login";
+import { toast } from "sonner";
 
 const Login = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   const form = useForm<LoginFormData>({
@@ -40,9 +39,7 @@ const Login = () => {
     onSuccess: (data) => {
       console.log(data);
       localStorage.setItem("user", data.success);
-
-      toast({
-        title: "User Login Successful",
+      toast.success("User Login Successful", {
         description: "Welcome back! You have been logged in successfully.",
       });
 
@@ -52,10 +49,8 @@ const Login = () => {
     },
     onError: (err) => {
       console.log(err.message);
-      toast({
-        title: "Login Failed",
+      toast.error("Login Failed", {
         description: "Invalid credentials. Please try again.",
-        // variant: "destructive", // highlights as an error
       });
     },
   });

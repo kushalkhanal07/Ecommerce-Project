@@ -11,20 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoginFormData, loginSchema } from "@/lib/auth";
-import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import { adminLogin, userLogin } from "@/service/auth/login";
+import { adminLogin } from "@/service/auth/login";
+import { toast } from "sonner";
 
 const AdminLogin = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   const form = useForm<LoginFormData>({
@@ -41,8 +34,7 @@ const AdminLogin = () => {
       console.log(data);
       localStorage.setItem("admin", data.success);
 
-      toast({
-        title: "Admin Login Successful",
+      toast.success("Admin Login Successful", {
         description: "Welcome back! You have been logged in successfully.",
       });
       setTimeout(() => {
@@ -51,10 +43,8 @@ const AdminLogin = () => {
     },
     onError: (err) => {
       console.log(err.message);
-      toast({
-        title: "Login Failed",
+      toast.error("Login Failed", {
         description: "Invalid credentials. Please try again.",
-        // variant: "destructive", // highlights as an error
       });
     },
   });
