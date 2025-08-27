@@ -45,6 +45,9 @@ const AdminLogin = () => {
         title: "Admin Login Successful",
         description: "Welcome back! You have been logged in successfully.",
       });
+      setTimeout(() => {
+        navigate("/admin");
+      }, 1000);
     },
     onError: (err) => {
       console.log(err.message);
@@ -60,9 +63,6 @@ const AdminLogin = () => {
     mutation.mutate(data);
 
     // Navigate to dashboard or home after successful login
-    setTimeout(() => {
-      navigate("/admin");
-    }, 1000);
   };
 
   return (

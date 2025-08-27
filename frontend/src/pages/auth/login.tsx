@@ -45,6 +45,10 @@ const Login = () => {
         title: "User Login Successful",
         description: "Welcome back! You have been logged in successfully.",
       });
+
+      setTimeout(() => {
+        navigate("/checkout");
+      }, 1000);
     },
     onError: (err) => {
       console.log(err.message);
@@ -60,9 +64,6 @@ const Login = () => {
     mutation.mutate(data);
 
     // Navigate to dashboard or home after successful login
-    setTimeout(() => {
-      navigate("/checkout");
-    }, 1000);
   };
 
   return (
