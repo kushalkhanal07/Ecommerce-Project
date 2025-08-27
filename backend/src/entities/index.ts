@@ -3,7 +3,7 @@ import { Admin } from "./admin";
 import { Product } from "./product";
 import { Order } from "./order";
 import { OrderItem } from "./orderItem";
-import { Review } from "./reviews";
+// import { Review } from "./reviews";
 
 export {
   User,
@@ -11,7 +11,7 @@ export {
   Product,
   Order,
   OrderItem,
-  Review,
+  // Review,
 };
 
 export default {
@@ -20,5 +20,5 @@ export default {
   Product,
   Order,
   OrderItem,
-  Review,
+  // Review,
 };

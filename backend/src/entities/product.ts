@@ -21,9 +21,9 @@ export class Product {
 
   // sizes for variant
   @Column({
-    type: "varchar",
-    length: 100,
+    type: "json",
     nullable: false,
+    default: "[]"
   })
   size!: string[];
 
@@ -43,8 +43,9 @@ export class Product {
 
   // images array
   @Column({
-    type: "varchar",
+    type: "json",
     nullable: false,
+    default: "[]"
   })
   images!: string[];
 

@@ -50,7 +50,7 @@ export const addProduct = async (req: Request, res: Response) => {
       price,
       description,
       brand,
-      size: typeof size === "string" ? JSON.parse(size) : size,
+      size,
       stock: stock ? Number(stock) : 0,
       slug,
       images,
@@ -63,6 +63,7 @@ export const addProduct = async (req: Request, res: Response) => {
       data: newProduct,
     });
   } catch (err) {
+    console.error("Error adding product:", err);
     return res.status(500).send({
       success: false,
       message: "Internal server error",

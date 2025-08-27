@@ -5,6 +5,7 @@ import baseRouter from "./routes/index";
 import BodyParser from "body-parser";
 import Cors from "cors";
 import fs from "fs";
+import morgon from "morgan";
 import { Admin, User } from "./entities";
 
 // global interface
@@ -30,7 +31,7 @@ const startApp = async () => {
       credentials: true,
     })
   );
-
+  app.use(morgon("dev"));
   // Database connection
   await connectDatabase();
   console.log("connection successfull");

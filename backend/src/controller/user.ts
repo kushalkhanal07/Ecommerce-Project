@@ -40,6 +40,7 @@ export const registerUser = async (req: Request, res: Response) => {
       message: "User registered successfully",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success: false,
       message: "Internal server error",
@@ -115,6 +116,7 @@ export const getUser = async (req: Request, res: Response) => {
       users,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success: false,
       message: "Internal server error",
