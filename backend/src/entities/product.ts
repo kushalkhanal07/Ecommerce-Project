@@ -50,4 +50,6 @@ export class Product {
     default: 0,
   })
   stock!: number;
+
+  
 }
