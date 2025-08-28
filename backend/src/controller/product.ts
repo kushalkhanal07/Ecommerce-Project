@@ -76,9 +76,10 @@ export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await productRepo.find();
     if (!products || products.length === 0) {
-      return res.status(404).send({
+      return res.status(200).send({
         success: false,
         message: "No products found",
+        data: []
       });
     }
     return res.status(200).send({
