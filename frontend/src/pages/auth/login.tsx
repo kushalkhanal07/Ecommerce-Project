@@ -38,7 +38,7 @@ const Login = () => {
     mutationFn: userLogin,
     onSuccess: (data) => {
       console.log(data);
-      localStorage.setItem("user", data.success);
+      localStorage.setItem("user", data.token);
       toast.success("User Login Successful", {
         description: "Welcome back! You have been logged in successfully.",
       });

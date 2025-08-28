@@ -13,8 +13,8 @@ export default function Cards({
   id,
   shoeType,
   price,
-  originalPrice,
-  discount,
+  description,
+  brand,
   rating,
   image,
 }: any) {
@@ -31,8 +31,12 @@ export default function Cards({
   return (
     <Card className="p-2 ">
       <CardHeader className="p-2">
-        <div>
-          <img src={image} alt={shoeType} />
+        <div className="h-[200px] ">
+          <img
+            src={image}
+            alt={shoeType}
+            className="w-full h-full object-cover"
+          />
         </div>
         <CardTitle className="font-bold text-[1.1em] flex justify-between items-center">
           {shoeType}{" "}
@@ -58,10 +62,10 @@ export default function Cards({
       </CardHeader>
 
       <CardFooter className="-mt-3 px-2">
-        <div className="flex gap-x-4 flex-wrap">
+        <div className="flex flex-col gap-x-4 flex-wrap">
           <p className="text-[#4440FF]">{price}</p>
-          <p className="line-through">{originalPrice}</p>
-          <p className="text-red-500">{discount}</p>
+          <p className="">{description}</p>
+          <p className="text-red-500">{brand}</p>
         </div>
       </CardFooter>
     </Card>
