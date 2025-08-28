@@ -12,6 +12,7 @@ const generateSlug = (name: string): string => {
 
 export const addProduct = async (req: Request, res: Response) => {
   const productRepo = AppDataSource.getRepository(Product);
+  console.log(req.body);
   const { name, price, description, brand, size, stock } = req.body;
   try {
     if (!name || !price || !description || !brand || !size) {
@@ -35,11 +36,13 @@ export const addProduct = async (req: Request, res: Response) => {
     // Handle image upload (multer stores files in req.files)
     let images: string[] = [];
     const PORT = process.env.PORT || 5000;
-    const baseUrl = req.protocol + '://' + req.get('host');
+    const baseUrl = req.protocol + "://" + req.get("host");
     if (req.files && (req.files as any).image) {
       const imageFiles = (req.files as any).image;
       if (Array.isArray(imageFiles)) {
-        images = imageFiles.map((file: any) => `${baseUrl}/uploads/${file.filename}`);
+        images = imageFiles.map(
+          (file: any) => `${baseUrl}/uploads/${file.filename}`
+        );
       } else {
         images = [`${baseUrl}/uploads/${imageFiles.filename}`];
       }
