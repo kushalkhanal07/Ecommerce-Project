@@ -22,7 +22,7 @@ export const addToCart = async (req: Request, res: Response) => {
       message: "Login is required to add product on cart",
     });
   }
-  const userRepo = AppDataSource.getMongoRepository(User);
+  const userRepo = AppDataSource.getRepository(User);
   const cartRepo = AppDataSource.getRepository(Cart);
   const productRepo = AppDataSource.getRepository(Product);
   try {
