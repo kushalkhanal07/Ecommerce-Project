@@ -19,6 +19,7 @@ import ProtectedRoute from "./pages/protectedRoute/protectedRoute";
 import AdminLogin from "./pages/auth/adminLogin";
 import AdminRegister from "./pages/auth/adminRegister";
 import AdminProtectedRoute from "./pages/protectedRoute/AdminProtectedRoute";
+import Wishlist from "./pages/wishlist/wishlist";
 export default function App() {
   return (
     <>
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/product" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route
             path="/checkout"
             element={

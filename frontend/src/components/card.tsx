@@ -5,10 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ShoppingCart, Star } from "lucide-react";
+import { Heart, ShoppingCart, Star } from "lucide-react";
 import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { AddToCart } from "@/service/cart";
+import { addWishlist, listWishlist } from "@/service/wishlist";
 export default function Cards({
   id,
   shoeType,
@@ -28,6 +29,16 @@ export default function Cards({
     },
   });
 
+  const wishlistMutation = useMutation({
+    mutationFn: addWishlist,
+    onSuccess: () => {
+      console.log("wishlist added successfully");
+    },
+    onError: (err) => {
+      console.log(err.message);
+    },
+  });
+
   return (
     <Card className="p-2 ">
       <CardHeader className="p-2">
@@ -40,13 +51,22 @@ export default function Cards({
         </div>
         <CardTitle className="font-bold text-[1.1em] flex justify-between items-center">
           {shoeType}{" "}
-          <Button
-            variant={"outline"}
-            className="cursor-pointer"
-            onClick={() => mutation.mutate(id)}
-          >
-            <ShoppingCart />{" "}
-          </Button>{" "}
+          <div className="flex gap-x-2">
+            <Button
+              variant={"outline"}
+              className="cursor-pointer"
+              onClick={() => mutation.mutate(id)}
+            >
+              <ShoppingCart />{" "}
+            </Button>{" "}
+            <Button
+              variant={"outline"}
+              className="cursor-pointer"
+              onClick={() => wishlistMutation.mutate(id)}
+            >
+              <Heart />{" "}
+            </Button>{" "}
+          </div>
         </CardTitle>
         <CardDescription className="flex">
           {[...Array(5)].map((_, i) => (
