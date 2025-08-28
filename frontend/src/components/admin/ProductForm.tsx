@@ -1,4 +1,4 @@
-// import { useState } from "react";
+// import { useState, useRef } from "react";
 // import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 // import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +10,10 @@
 //   SelectTrigger,
 //   SelectValue,
 // } from "@/components/ui/select";
+// import { X } from "lucide-react";
+// import { useMutation } from "@tanstack/react-query";
+// import { addProduct } from "@/service/products";
+// import { toast } from "sonner";
 
 // const ProductForm = ({
 //   initialData = null,
@@ -28,16 +32,83 @@
 //     stock: initialData?.stock || "",
 //   });
 
+//   const [imagePreview, setImagePreview] = useState(initialData?.image || null);
+//   const [selectedFile, setSelectedFile] = useState(null);
+//   console.log(selectedFile);
+//   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
 //   const handleSubmit = (e: any) => {
 //     e.preventDefault();
-//     onSubmit(formData);
+//     console.log(formData);
+//     // Create FormData object to handle file upload
+//     const submitData = new FormData();
+//     submitData.append("name", formData.name);
+//     submitData.append("brand", formData.brand);
+//     submitData.append("size[]", formData.size);
+//     submitData.append("price", formData.price);
+//     submitData.append("description", formData.description);
+//     submitData.append("stock", formData.stock);
+
+//     // Only append the file if a new one was selected
+//     if (selectedFile) {
+//       submitData.append("image", selectedFile);
+//     } else if (initialData?.image) {
+//       // If editing and no new file selected, keep the existing image URL
+//       submitData.append("imageUrl", formData.image);
+//     }
+
+//     onSubmit(submitData);
+//     mutation.mutate(submitData);
 //   };
+
+//   const mutation = useMutation({
+//     mutationFn: addProduct,
+//     onSuccess: (data) => {
+//       console.log(data);
+//       toast.success("Product add Successful", {
+//         description: "successfull.",
+//       });
+//     },
+//     onError: () => {
+//       toast.error("Add product failed", {
+//         description: "Failed adding product",
+//       });
+//     },
+//   });
 
 //   const handleChange = (field: any, value: any) => {
 //     setFormData((prev) => ({
 //       ...prev,
 //       [field]: value,
 //     }));
+//   };
+
+//   const handleImageChange = (e: any) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       setSelectedFile(file);
+
+//       // Create a preview URL for the image
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         setImagePreview(reader.result);
+//       };
+//       reader.readAsDataURL(file);
+
+//       // Also update the formData for potential fallback
+//       handleChange("image", URL.createObjectURL(file));
+//     }
+//   };
+
+//   const handleRemoveImage = () => {
+//     setImagePreview(null);
+//     setSelectedFile(null);
+//     handleChange("image", "");
+
+//     // Reset the file input
+//     if (fileInputRef.current) {
+//       fileInputRef.current.value = "";
+//     }
 //   };
 
 //   const brands = [
@@ -50,21 +121,7 @@
 //     "Jordan",
 //     "Reebok",
 //   ];
-//   const sizes = [
-//     "US 6",
-//     "US 6.5",
-//     "US 7",
-//     "US 7.5",
-//     "US 8",
-//     "US 8.5",
-//     "US 9",
-//     "US 9.5",
-//     "US 10",
-//     "US 10.5",
-//     "US 11",
-//     "US 11.5",
-//     "US 12",
-//   ];
+//   const sizes = ["L", "XL", "XXL", "M"];
 
 //   return (
 //     <form onSubmit={handleSubmit} className="space-y-4">
@@ -144,15 +201,36 @@
 //         </div>
 
 //         <div className="space-y-2">
-//           <Label htmlFor="image">Image URL</Label>
+//           <Label htmlFor="image">Product Image</Label>
 //           <Input
 //             id="image"
-//             value={formData.image}
-//             onChange={(e) => handleChange("image", e.target.value)}
-//             placeholder="Enter image URL"
+//             type="file"
+//             accept="image/*"
+//             onChange={handleImageChange}
+//             ref={fileInputRef}
 //           />
 //         </div>
 //       </div>
+
+//       {/* Image Preview */}
+//       {imagePreview && (
+//         <div className="relative inline-block">
+//           <div className="w-40 h-40 border rounded-md overflow-hidden">
+//             <img
+//               src={imagePreview}
+//               alt="Product preview"
+//               className="w-full h-full object-contain"
+//             />
+//           </div>
+//           <button
+//             type="button"
+//             onClick={handleRemoveImage}
+//             className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+//           >
+//             <X size={16} />
+//           </button>
+//         </div>
+//       )}
 
 //       <div className="space-y-2">
 //         <Label htmlFor="description">Description</Label>
@@ -177,7 +255,7 @@
 
 // export default ProductForm;
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -190,6 +268,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { X } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addProduct, getProducts } from "@/service/products";
+import { toast } from "sonner";
 
 const ProductForm = ({
   initialData = null,
@@ -199,27 +280,48 @@ const ProductForm = ({
   onSubmit: any;
 }) => {
   const [formData, setFormData] = useState({
-    name: initialData?.name || "",
-    brand: initialData?.brand || "",
-    size: initialData?.size || "",
-    price: initialData?.price || "",
-    description: initialData?.description || "",
-    image: initialData?.image || "",
-    stock: initialData?.stock || "",
+    name: "",
+    brand: "",
+    size: "",
+    price: "",
+    description: "",
+    image: "",
+    stock: "",
   });
 
-  const [imagePreview, setImagePreview] = useState(initialData?.image || null);
+  const [imagePreview, setImagePreview] = useState<any>(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  console.log(selectedFile);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Initialize form with initialData when it changes
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name || "",
+        brand: initialData.brand || "",
+        size: initialData.size || "",
+        price: initialData.price || "",
+        description: initialData.description || "",
+        image: initialData.image || "",
+        stock: initialData.stock || "",
+      });
+
+      if (initialData.image) {
+        setImagePreview(initialData.image);
+      }
+    }
+  }, [initialData]);
+  const queryClient = useQueryClient();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(formData);
+
     // Create FormData object to handle file upload
     const submitData = new FormData();
     submitData.append("name", formData.name);
     submitData.append("brand", formData.brand);
-    submitData.append("size", formData.size);
+    submitData.append("size[]", formData.size);
     submitData.append("price", formData.price);
     submitData.append("description", formData.description);
     submitData.append("stock", formData.stock);
@@ -232,8 +334,35 @@ const ProductForm = ({
       submitData.append("imageUrl", formData.image);
     }
 
+    // for (let [key, value] of submitData.entries()) {
+    //   console.log(key, value);
+    // }
+    console.log("====", formData);
+
     onSubmit(submitData);
+
+    // If adding a new product (not editing), call the mutation
+    if (!initialData) {
+      mutation.mutate(submitData);
+    }
   };
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getProducts"],
+    queryFn: getProducts,
+  });
+
+  const mutation = useMutation({
+    mutationFn: addProduct,
+    onSuccess: (data) => {
+      console.log("Add success:", data);
+      toast.success("Product added successfully");
+      queryClient.invalidateQueries({ queryKey: ["getProducts"] });
+    },
+    onError: () => {
+      toast.error("Add product failed");
+    },
+  });
 
   const handleChange = (field: any, value: any) => {
     setFormData((prev) => ({
@@ -250,7 +379,7 @@ const ProductForm = ({
       // Create a preview URL for the image
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setImagePreview(reader?.result);
       };
       reader.readAsDataURL(file);
 
@@ -280,21 +409,7 @@ const ProductForm = ({
     "Jordan",
     "Reebok",
   ];
-  const sizes = [
-    "US 6",
-    "US 6.5",
-    "US 7",
-    "US 7.5",
-    "US 8",
-    "US 8.5",
-    "US 9",
-    "US 9.5",
-    "US 10",
-    "US 10.5",
-    "US 11",
-    "US 11.5",
-    "US 12",
-  ];
+  const sizes = ["L", "XL", "XXL", "M"];
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

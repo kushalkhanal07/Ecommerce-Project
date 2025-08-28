@@ -32,7 +32,7 @@ const AdminLogin = () => {
     mutationFn: adminLogin,
     onSuccess: (data) => {
       console.log(data);
-      localStorage.setItem("admin", data.success);
+      localStorage.setItem("admin", data.token);
 
       toast.success("Admin Login Successful", {
         description: "Welcome back! You have been logged in successfully.",

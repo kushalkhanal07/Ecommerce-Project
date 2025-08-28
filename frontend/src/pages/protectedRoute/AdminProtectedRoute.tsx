@@ -7,7 +7,7 @@ export default function AdminProtectedRoute({ children }: any) {
   useEffect(() => {
     setLoading(true);
   }, []);
-  console.log(data);
+
   if (!isLoading) {
     return <div>Loading...</div>;
   }
