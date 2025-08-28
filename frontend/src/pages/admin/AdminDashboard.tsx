@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, ShoppingCart, Users, DollarSign } from "lucide-react";
+import { listCart } from "@/service/cart";
+import { useQuery } from "@tanstack/react-query";
+import { Package, ShoppingCart, Users, DollarSign, Loader } from "lucide-react";
 
 const AdminDashboard = () => {
   const stats = [

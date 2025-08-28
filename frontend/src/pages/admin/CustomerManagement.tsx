@@ -109,9 +109,7 @@ const CustomerManagement = () => {
     return <div>{error?.message}</div>;
   }
 
-  console.log(data);
-
-  const filteredCustomers = data?.filter(
+  const filteredCustomers = data.users?.filter(
     (customer: any) =>
       customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||

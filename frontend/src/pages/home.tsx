@@ -3,9 +3,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import data from "@/data/shoeData.json";
-import { Star } from "lucide-react";
+import { listCart } from "@/service/cart";
+import { getProducts } from "@/service/products";
+import { useQuery } from "@tanstack/react-query";
+import { Loader, Star } from "lucide-react";
 export default function Home() {
   const image = ["/image1.png", "/image2.png", "/image3.png"];
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["listProducts"],
+    queryFn: getProducts,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
+
+  console.log(data);
   return (
     <div className="pb-32">
       <img src="/shoe.png" />
@@ -34,25 +56,24 @@ export default function Home() {
             <TabsContent value="all">
               <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
                 {data.map(
-                  (
-                    {
-                      shoeType,
-                      price,
-                      originalPrice,
-                      discount,
-                      rating,
-                      image,
-                    }: any,
-                    i
-                  ) => (
+                  ({
+                    id,
+                    name,
+                    price,
+                    description,
+                    brand,
+                    rating,
+                    images,
+                  }: any) => (
                     <Cards
-                      key={i}
-                      shoeType={shoeType}
+                      key={id}
+                      id={id}
+                      shoeType={name}
                       price={price}
-                      originalPrice={originalPrice}
-                      discount={discount}
+                      description={description}
+                      brand={brand}
                       rating={rating}
-                      image={image}
+                      image={images[0]}
                     />
                   )
                 )}

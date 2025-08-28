@@ -2,7 +2,7 @@ import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 
 // Create axios instance with default config
-const api = axios.create({
+const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:3001/api",
   withCredentials: true,
   headers: {
@@ -11,9 +11,9 @@ const api = axios.create({
 });
 
 // Request interceptor to add auth token
-api.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("admin");
+    const token = localStorage.getItem("user");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,7 +25,7 @@ api.interceptors.request.use(
 );
 
 // Response interceptor to handle common errors
-api.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -58,4 +58,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default axiosInstance;

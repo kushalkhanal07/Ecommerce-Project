@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Eye, Filter } from "lucide-react";
+import { Search, Eye, Filter, Loader } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -26,6 +26,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { getOrders } from "@/service/order";
+import { useQuery } from "@tanstack/react-query";
 
 // Mock data for orders
 const mockOrders = [
@@ -96,7 +98,25 @@ const OrderManagement = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
-  const filteredOrders = orders.filter((order) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["getOrders"],
+    queryFn: getOrders,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
+  console.log(data);
+
+  const filteredOrders = data.filter((order: any) => {
     const matchesSearch =
       order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -183,7 +203,7 @@ const OrderManagement = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredOrders.map((order) => (
+              {filteredOrders.map((order: any) => (
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>

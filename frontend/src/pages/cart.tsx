@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CartItem } from "@/components/CartItem";
 import { VoucherCode } from "@/components/VoucherCode";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { BanknoteIcon, CreditCard } from "lucide-react";
+import { BanknoteIcon, CreditCard, Loader } from "lucide-react";
 import { PaypalIcon } from "@/components/PaymentIcons";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +22,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { listCart } from "@/service/cart";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -99,6 +101,24 @@ const Cart = () => {
     },
   });
 
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["customers"],
+    queryFn: listCart,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
+  console.log(data);
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -119,18 +139,24 @@ const Cart = () => {
 
         {/* Cart Items */}
         <div className="space-y-2 text-[0.7em] sm:text-[0.9em] lg:text-[1em]">
-          {cartItems.map((item) => (
-            <CartItem
-              key={item.id}
-              id={item.id}
-              image={item.image}
-              name={item.name}
-              price={item.price}
-              initialQuantity={item.quantity}
-              onRemove={handleRemoveItem}
-              onQuantityChange={handleQuantityChange}
-            />
-          ))}
+          {data?.data?.length ? (
+            data?.data?.map((item: any) => (
+              <CartItem
+                key={item.id}
+                id={item.id}
+                image={item.image}
+                name={item.name}
+                price={item.price}
+                initialQuantity={item.quantity}
+                onRemove={handleRemoveItem}
+                onQuantityChange={handleQuantityChange}
+              />
+            ))
+          ) : (
+            <p className="text-center text-lg text-gray-500 my-8">
+              Add product to cart. No cart available
+            </p>
+          )}
         </div>
 
         {/* Voucher Section */}
