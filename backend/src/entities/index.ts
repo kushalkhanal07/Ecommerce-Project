@@ -4,6 +4,7 @@ import { Product } from "./product";
 import { Order } from "./order";
 import { OrderItem } from "./orderItem";
 // import { Review } from "./reviews";
+import { Cart } from './cart';
 
 export {
   User,
@@ -11,6 +12,7 @@ export {
   Product,
   Order,
   OrderItem,
+  Cart
   // Review,
 };
 
@@ -20,5 +22,6 @@ export default {
   Product,
   Order,
   OrderItem,
+  Cart
   // Review,
 };

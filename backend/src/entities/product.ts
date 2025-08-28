@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Cart } from "./cart";
+import { Wishlist } from "./wishlist";
 
 @Entity("products")
 export class Product {
@@ -74,5 +76,9 @@ export class Product {
   })
   stock!: number;
 
-  
+  @ManyToOne(() => Cart, (cart) => cart.product)
+  cart!: Cart;
+
+  @ManyToOne(() => Wishlist, (wishlist) => wishlist.product)
+  wishlist!: Wishlist;
 }
