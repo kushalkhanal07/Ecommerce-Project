@@ -156,7 +156,7 @@ export const getProductBySlug = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response) => {
   const productRepo = AppDataSource.getRepository(Product);
   const { id } = req.params;
-  const { name, price, description } = req.body;
+  const { name, price, description, size, brand, slug } = req.body;
 
   try {
     const existingProduct = await productRepo.findOne({
@@ -187,6 +187,9 @@ export const updateProduct = async (req: Request, res: Response) => {
     existingProduct.name = name || existingProduct.name;
     existingProduct.price = price || existingProduct.price;
     existingProduct.description = description || existingProduct.description;
+    existingProduct.size = size || existingProduct.size;
+    existingProduct.brand = brand || existingProduct.brand;
+    existingProduct.slug = slug || existingProduct.slug;
 
     await productRepo.save(existingProduct);
     return res.status(200).send({
