@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 
 export const toggleWishlist = async (req: Request, res: Response) => {
   const userId = req.user?.id;
-  const productId = req.params.id;
+  const productId = req.body.id;
   if (!userId) {
     return res.status(401).send({
       success: false,
