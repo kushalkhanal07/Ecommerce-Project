@@ -73,9 +73,10 @@ export const addToCart = async (req: Request, res: Response) => {
       message: "Product added to cart successfully",
     });
   } catch (err) {
+    console.error(err);
     return res.status(500).send({
       success: false,
-      Message: "Internal server error",
+      message: "Internal server error",
     });
   }
 };
@@ -86,7 +87,8 @@ export const getCart = async (req: Request, res: Response) => {
         const cart = await cartRepo.findOne({
             where: {
                 id: cartId
-            }
+            },
+            relations: ["product","user"]
         });
         if (!cart) {
             return res.status(200).send({
@@ -110,7 +112,9 @@ export const getCart = async (req: Request, res: Response) => {
 export const listAll = async(req:Request,res:Response)=>{
     const cartRepo = AppDataSource.getRepository(Cart);
     try{
-        const carts = await cartRepo.find();
+        const carts = await cartRepo.find({
+          relations: ["product"]
+        });
         return res.status(200).send({
             success: true,
             data: carts
