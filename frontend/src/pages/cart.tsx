@@ -117,7 +117,6 @@ const Cart = () => {
   if (isError) {
     return <div>{error?.message}</div>;
   }
-  console.log(data);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -139,14 +138,14 @@ const Cart = () => {
 
         {/* Cart Items */}
         <div className="space-y-2 text-[0.7em] sm:text-[0.9em] lg:text-[1em]">
-          {data?.data?.length ? (
-            data?.data?.map((item: any) => (
+          {data?.length ? (
+            data?.map((item: any) => (
               <CartItem
                 key={item.id}
                 id={item.id}
-                image={item.image}
-                name={item.name}
-                price={item.price}
+                image={item.product[0].images[0]}
+                name={item.product[0].name}
+                price={item.product[0].price}
                 initialQuantity={item.quantity}
                 onRemove={handleRemoveItem}
                 onQuantityChange={handleQuantityChange}

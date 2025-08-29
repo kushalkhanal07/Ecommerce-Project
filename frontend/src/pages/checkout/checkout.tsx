@@ -28,12 +28,16 @@ import {
   ShoppingBag,
   Loader2,
   BanknoteIcon,
+  Loader,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Link } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
 import { PaypalIcon } from "@/components/PaymentIcons";
 import { Checkbox } from "@/components/ui/checkbox";
+import { listCart } from "@/service/cart";
+import { useQuery } from "@tanstack/react-query";
+import { getCustomer } from "@/service/customer";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -141,6 +145,35 @@ const Checkout = () => {
     }
     return v;
   };
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["customers"],
+    queryFn: listCart,
+  });
+
+  const {
+    data: userData,
+    isLoading: isLoader,
+    isError: showError,
+    error: errors,
+  } = useQuery({
+    queryKey: ["getCustomer"],
+    queryFn: getCustomer,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
+
+  // console.log(userData);
 
   const onSubmit = async (data: CheckoutFormData) => {
     setIsSubmitting(true);
@@ -605,31 +638,26 @@ const Checkout = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                      <ShoppingBag className="h-6 w-6 text-gray-500" />
+                {data.map(({ id, quantity, product }: any) => {
+                  return (
+                    <div key={id} className="flex justify-between items-center">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                          <img src={product[0].images} />
+                        </div>
+                        <div>
+                          <p className="font-medium">{product[0].name}</p>
+                          <p className="text-sm text-gray-500">
+                            Qty: {quantity}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="font-medium">
+                        ${quantity * product[0].price}
+                      </span>
                     </div>
-                    <div>
-                      <p className="font-medium">Premium Wireless Headphones</p>
-                      <p className="text-sm text-gray-500">Qty: 1</p>
-                    </div>
-                  </div>
-                  <span className="font-medium">$299.99</span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                      <ShoppingBag className="h-6 w-6 text-gray-500" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Bluetooth Speaker</p>
-                      <p className="text-sm text-gray-500">Qty: 2</p>
-                    </div>
-                  </div>
-                  <span className="font-medium">$159.98</span>
-                </div>
+                  );
+                })}
               </div>
 
               <Separator />
@@ -637,15 +665,20 @@ const Checkout = () => {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>$459.97</span>
+                  <span>
+                    $
+                    {data.reduce((acc: number, current: any) => {
+                      return acc + current.quantity * current.product[0].price;
+                    }, 0)}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>$9.99</span>
+                  <span>$0</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tax</span>
-                  <span>$37.60</span>
+                  <span>No tax</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">

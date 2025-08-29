@@ -3,7 +3,9 @@ import axiosInstance from "./clientAxios";
 
 export async function addWishlist(id: number) {
   console.log("wish==", id);
-  const res = await axiosInstance.post(`/wishlist/add/${id}`);
+  const res = await axiosInstance.post(`/wishlist/add`, {
+    id,
+  });
   return res.data.data;
 }
 

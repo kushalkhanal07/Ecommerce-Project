@@ -91,7 +91,6 @@ export default function Wishlist() {
   if (isError) {
     return <div>{error?.message}</div>;
   }
-  console.log(data);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -101,7 +100,7 @@ export default function Wishlist() {
         <div className="w-20 h-1 bg-blue-500 mx-auto mt-4 rounded-full"></div>
       </div>
 
-      {data?.length ? (
+      {!data?.length ? (
         <div className="text-center py-20">
           <Heart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-2xl font-semibold text-gray-700 mb-2">
@@ -116,22 +115,18 @@ export default function Wishlist() {
             <p className="text-gray-600">
               {data.length} {data.length === 1 ? "item" : "items"} in wishlist
             </p>
-            <Button variant="outline">
-              <ShoppingCart className="h-4 w-4 mr-2" />
-              Move All to Cart
-            </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {wishlistItems.map((item) => (
+            {data.map((item: any) => (
               <Card
                 key={item.id}
                 className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="relative">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={item.product.images[0]}
+                    alt={item.product.name}
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute top-2 right-2">
@@ -156,22 +151,30 @@ export default function Wishlist() {
                   )}
                 </div>
                 <CardContent className="p-4">
-                  <p className="text-sm text-gray-500 mb-1">{item.brand}</p>
+                  <p className="font-semibold text-[1.3em]">
+                    {item.product.description}
+                  </p>
+                  <p className="text-sm text-gray-500 mb-1">
+                    Brand: {item.product.brand}
+                  </p>
                   <h3 className="font-semibold mb-2 line-clamp-1">
-                    {item.name}
+                    {item.product.name}
                   </h3>
+
                   <div className="flex items-center mb-2">
                     <div className="flex text-yellow-400">
                       {"★".repeat(Math.floor(item.rating))}
                       {"☆".repeat(5 - Math.floor(item.rating))}
                     </div>
-                    <span className="text-sm text-gray-500 ml-1">
-                      ({item.rating})
+                    <span className="text-sm text-gray-500">
+                      Rating: ({item.rating || 5})
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-bold text-lg">${item.price}</span>
+                      <span className="font-bold text-lg">
+                        ${item.product.price}
+                      </span>
                       {item.originalPrice > item.price && (
                         <span className="text-sm text-gray-500 line-through ml-2">
                           ${item.originalPrice}
