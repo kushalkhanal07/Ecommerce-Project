@@ -168,12 +168,17 @@ const Cart = () => {
           <div className="mt-8 space-y-4 max-w-[400px] w-full">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Subtotal</span>
-              <span className="font-medium">${subtotal}</span>
+              <span className="font-medium">
+                $
+                {data.reduce((acc: number, current: any) => {
+                  return acc + current.quantity * current.product[0]?.price;
+                }, 0)}
+              </span>
             </div>
 
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Shipping fee</span>
-              <span className="font-medium">${shippingFee}</span>
+              <span className="font-medium">${0}</span>
             </div>
 
             <div className="flex justify-between text-sm">
@@ -183,9 +188,17 @@ const Cart = () => {
               </span>
             </div>
 
-            <div className="w-full max-w-[800px] sm:max-w-[800px] sm:w-full p-0 gap-0 bg-white border-0 shadow-2xl">
+            <div
+              className="w-full max-w-[800px] sm:max-w-[800px] sm:w-full p-0 gap-0 bg-white border-0 shadow-2xl flex justify-between
+            "
+            >
               <span>TOTAL</span>
-              <span>${total}</span>
+              <span className="font-bold">
+                $
+                {data.reduce((acc: number, current: any) => {
+                  return acc + current.quantity * current.product[0]?.price;
+                }, 0)}
+              </span>
             </div>
 
             <Dialog>

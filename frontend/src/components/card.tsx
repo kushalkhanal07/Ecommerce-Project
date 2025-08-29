@@ -9,7 +9,8 @@ import { Heart, ShoppingCart, Star } from "lucide-react";
 import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { AddToCart } from "@/service/cart";
-import { addWishlist, listWishlist } from "@/service/wishlist";
+import { addWishlist } from "@/service/wishlist";
+import { toast } from "sonner";
 export default function Cards({
   id,
   shoeType,
@@ -23,9 +24,15 @@ export default function Cards({
     mutationFn: AddToCart,
     onSuccess: () => {
       console.log("cart added successfully");
+      toast.success("cart added successfully", {
+        description: "Successfull.",
+      });
     },
     onError: (err) => {
       console.log(err.message);
+      toast.error("Failed to add cart", {
+        description: "Failed",
+      });
     },
   });
 
@@ -33,9 +40,15 @@ export default function Cards({
     mutationFn: addWishlist,
     onSuccess: () => {
       console.log("wishlist added successfully");
+      toast.success("wishlist added successfully", {
+        description: "Successfull.",
+      });
     },
     onError: (err) => {
       console.log(err.message);
+      toast.error("Failed to add wishlist", {
+        description: "Failed",
+      });
     },
   });
 
@@ -50,7 +63,7 @@ export default function Cards({
           />
         </div>
         <CardTitle className="font-bold text-[1.1em] flex justify-between items-center">
-          {shoeType}{" "}
+          <span className="capitalize">{shoeType}</span>{" "}
           <div className="flex gap-x-2">
             <Button
               variant={"outline"}
@@ -68,13 +81,14 @@ export default function Cards({
             </Button>{" "}
           </div>
         </CardTitle>
-        <CardDescription className="flex">
+        <CardDescription className="flex items-center ">
+          <span className="mr-4">Reviews :</span>
           {[...Array(5)].map((_, i) => (
             <Star
               size={15}
               key={i}
               className={
-                i < rating ? "text-yellow-300 fill-yellow-500" : "text-gray-300"
+                i < 4 ? "text-yellow-300 fill-yellow-500" : "text-gray-300"
               }
             />
           ))}
@@ -82,10 +96,10 @@ export default function Cards({
       </CardHeader>
 
       <CardFooter className="-mt-3 px-2">
-        <div className="flex flex-col gap-x-4 flex-wrap">
-          <p className="text-[#4440FF]">{price}</p>
-          <p className="">{description}</p>
-          <p className="text-red-500">{brand}</p>
+        <div className="flex flex-col gap-4 flex-wrap">
+          <p className="text-[1.2em] font-semibold">{description}</p>
+          <p className="text-[#4440FF]">Price : ${price}</p>
+          <p className="text-red-500">Brand: {brand}</p>
         </div>
       </CardFooter>
     </Card>

@@ -27,7 +27,6 @@ export default function Home() {
     return <div>{error?.message}</div>;
   }
 
-  console.log(data);
   return (
     <div className="pb-32">
       <img src="/shoe.png" />
@@ -79,10 +78,110 @@ export default function Home() {
                 )}
               </div>
             </TabsContent>
-            <TabsContent value="women">women</TabsContent>
-            <TabsContent value="men">men</TabsContent>
-            <TabsContent value="unisex">unisex</TabsContent>
-            <TabsContent value="casual">casual</TabsContent>
+            <TabsContent value="women">
+              <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+                {data.map(
+                  ({
+                    id,
+                    name,
+                    price,
+                    description,
+                    brand,
+                    rating,
+                    images,
+                  }: any) => (
+                    <Cards
+                      key={id}
+                      id={id}
+                      shoeType={name}
+                      price={price}
+                      description={description}
+                      brand={brand}
+                      rating={rating}
+                      image={images[0]}
+                    />
+                  )
+                )}
+              </div>
+            </TabsContent>
+            <TabsContent value="men">
+              <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+                {data.map(
+                  ({
+                    id,
+                    name,
+                    price,
+                    description,
+                    brand,
+                    rating,
+                    images,
+                  }: any) => (
+                    <Cards
+                      key={id}
+                      id={id}
+                      shoeType={name}
+                      price={price}
+                      description={description}
+                      brand={brand}
+                      rating={rating}
+                      image={images[0]}
+                    />
+                  )
+                )}
+              </div>
+            </TabsContent>
+            <TabsContent value="unisex">
+              <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+                {data.map(
+                  ({
+                    id,
+                    name,
+                    price,
+                    description,
+                    brand,
+                    rating,
+                    images,
+                  }: any) => (
+                    <Cards
+                      key={id}
+                      id={id}
+                      shoeType={name}
+                      price={price}
+                      description={description}
+                      brand={brand}
+                      rating={rating}
+                      image={images[0]}
+                    />
+                  )
+                )}
+              </div>
+            </TabsContent>
+            <TabsContent value="casual">
+              <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+                {data.map(
+                  ({
+                    id,
+                    name,
+                    price,
+                    description,
+                    brand,
+                    rating,
+                    images,
+                  }: any) => (
+                    <Cards
+                      key={id}
+                      id={id}
+                      shoeType={name}
+                      price={price}
+                      description={description}
+                      brand={brand}
+                      rating={rating}
+                      image={images[0]}
+                    />
+                  )
+                )}
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
 

@@ -6,11 +6,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Grid3x3, Menu } from "lucide-react";
-import data from "@/data/shoeData.json";
+import { Grid3x3, Loader, Menu } from "lucide-react";
 import Cards from "@/components/card";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/service/products";
 
 export default function Shop() {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["listProducts"],
+    queryFn: getProducts,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
+
   return (
     <>
       <div className="mt-10 grid lg:grid-cols-5 gap-4">
@@ -88,9 +106,9 @@ export default function Shop() {
                   <SelectTrigger className="w-fit">
                     <SelectValue placeholder="Name" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Name</SelectItem>
-                    <SelectItem value="dark">Category</SelectItem>
+                  <SelectContent defaultValue={"system"}>
+                    <SelectItem value="light">Size</SelectItem>
+                    <SelectItem value="dark">Price</SelectItem>
                     <SelectItem value="system">Brand</SelectItem>
                   </SelectContent>
                 </Select>
@@ -121,27 +139,26 @@ export default function Shop() {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
+          <div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
             {data.map(
-              (
-                {
-                  shoeType,
-                  price,
-                  originalPrice,
-                  discount,
-                  rating,
-                  image,
-                }: any,
-                i
-              ) => (
+              ({
+                id,
+                name,
+                price,
+                description,
+                brand,
+                rating,
+                images,
+              }: any) => (
                 <Cards
-                  key={i}
-                  shoeType={shoeType}
+                  key={id}
+                  id={id}
+                  shoeType={name}
                   price={price}
-                  originalPrice={originalPrice}
-                  discount={discount}
+                  description={description}
+                  brand={brand}
                   rating={rating}
-                  image={image}
+                  image={images[0]}
                 />
               )
             )}
