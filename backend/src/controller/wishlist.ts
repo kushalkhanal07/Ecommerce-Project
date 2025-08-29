@@ -42,7 +42,9 @@ export const toggleWishlist = async (req: Request, res: Response) => {
     const wishlistExist = await wishlistRepo.findOne({
       where: {
         user: user,
-        product: productExists,
+        product: {
+          id: productExists.id,
+        },
       },
     });
 
@@ -63,6 +65,7 @@ export const toggleWishlist = async (req: Request, res: Response) => {
       message: "Product removed from wishlist",
     });
   } catch (err) {
+    console.error(err);
     return res.status(500).send({
       success: false,
       message: "Internal Server Error",

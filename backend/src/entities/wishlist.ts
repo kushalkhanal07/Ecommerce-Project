@@ -1,4 +1,4 @@
-import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product";
 import { User } from "./user";
 
@@ -9,8 +9,10 @@ export class Wishlist {
   id!: string;
 
   @OneToOne(() => Product, (product) => product.cart)
+  @JoinColumn()
   product!: Product;
 
   @OneToOne(() => User, (user) => user.cart)
+  @JoinColumn()
   user!: User;
 }
