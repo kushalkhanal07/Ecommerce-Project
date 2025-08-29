@@ -126,4 +126,77 @@ export const listAll = async(req:Request,res:Response)=>{
             message: "Internal server error",
         });
     }
-}
+  };
+
+// Clear entire cart
+export const clearCart = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Login is required to clear cart",
+      });
+    }
+
+    const cartRepo = AppDataSource.getRepository(Cart);
+
+    await cartRepo.delete({ user: { id: userId } });
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart cleared successfully",
+    });
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// Delete single product from cart
+export const deleteFromCart = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const productId = req.params.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Login is required to remove product from cart",
+      });
+    }
+
+    const cartRepo = AppDataSource.getRepository(Cart);
+
+    const cart = await cartRepo.findOne({
+      where: {
+        user: { id: userId },
+        product: { id: productId },
+      },
+      relations: ["user", "product"], // ensures user/product objects are loaded
+    });
+
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found in cart",
+      });
+    }
+
+    await cartRepo.remove(cart);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product removed from cart successfully",
+    });
+  } catch (error) {
+    console.error("Error removing product from cart:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

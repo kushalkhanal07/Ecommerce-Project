@@ -8,7 +8,7 @@ export class Wishlist {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @OneToOne(() => Product, (product) => product.cart)
+  @ManyToOne(() => Product, (product) => product.cart)
   @JoinColumn()
   product!: Product;
 

@@ -8,6 +8,7 @@ const connection = mysql.createConnection({
 });
 
 // Create database
+
 connection.query(`CREATE DATABASE IF NOT EXISTS ecommerce`, (err, results) => {
   if (err) {
     console.error('Error creating database:', err);
