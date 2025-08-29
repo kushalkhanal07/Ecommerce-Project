@@ -36,8 +36,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { PaypalIcon } from "@/components/PaymentIcons";
 import { Checkbox } from "@/components/ui/checkbox";
 import { listCart } from "@/service/cart";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCustomer } from "@/service/customer";
+import { addOrder } from "@/service/order";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -146,7 +148,12 @@ const Checkout = () => {
     return v;
   };
 
-  const { data, isLoading, isError, error } = useQuery({
+  const {
+    data: datas,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["customers"],
     queryFn: listCart,
   });
@@ -161,7 +168,18 @@ const Checkout = () => {
     queryFn: getCustomer,
   });
 
-  if (isLoading) {
+  const mutation = useMutation({
+    mutationFn: addOrder,
+    onSuccess: (data) => {
+      toast.success("Order Created successfully");
+      form.reset();
+    },
+    onError: () => {
+      toast.error("Create Order failed");
+    },
+  });
+
+  if (isLoading || isLoader) {
     return (
       <div className="flex justify-center items-center h-[600px]">
         <Loader size={25} className="animate-spin" />
@@ -169,19 +187,43 @@ const Checkout = () => {
     );
   }
 
-  if (isError) {
+  if (isError || showError) {
     return <div>{error?.message}</div>;
   }
 
-  // console.log(userData);
+  console.log(datas);
 
   const onSubmit = async (data: CheckoutFormData) => {
     setIsSubmitting(true);
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("Order submitted:", data);
+    //     {
+    //   productId: string;
+    //   productName: string;
+    //   quantity: number;
+    //   price: number;
+    //   totalPrice: number;
+    // }
+    console.log("===", datas);
+    const finalData = datas.map(({ quantity, product }: any) => {
+      return {
+        productId: product[0].id,
+        productName: product[0].name,
+        quantity,
+        price: product[0].price,
+        totalPrice: product[0].price,
+      };
+    });
+
+    // };
+    const details = {
+      userId: userData?.user?.id,
+      items: finalData,
+      shippingAddress: data.streetAddress,
+      paymentMethod: "stripe",
+      remarks: "Good system",
+    };
+    mutation.mutate(details);
     setIsSubmitting(false);
-    alert("Order placed successfully!");
   };
 
   return (
@@ -638,7 +680,7 @@ const Checkout = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                {data.map(({ id, quantity, product }: any) => {
+                {datas.map(({ id, quantity, product }: any) => {
                   return (
                     <div key={id} className="flex justify-between items-center">
                       <div className="flex items-center gap-3">
@@ -667,7 +709,7 @@ const Checkout = () => {
                   <span>Subtotal</span>
                   <span>
                     $
-                    {data.reduce((acc: number, current: any) => {
+                    {datas.reduce((acc: number, current: any) => {
                       return acc + current.quantity * current.product[0].price;
                     }, 0)}
                   </span>

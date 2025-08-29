@@ -42,7 +42,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Unauthorized - redirect to login
       localStorage.removeItem("authToken");
-      window.location.href = "/login";
+      window.location.href = "/admin/login";
     } else if (error.response?.status === 403) {
       // Forbidden - user doesn't have permission
       console.error("Forbidden:", message);

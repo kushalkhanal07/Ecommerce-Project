@@ -143,10 +143,10 @@ const Cart = () => {
               <CartItem
                 key={item.id}
                 id={item.id}
-                image={item.product[0].images[0]}
-                name={item.product[0].name}
-                price={item.product[0].price}
-                initialQuantity={item.quantity}
+                image={item?.product[0]?.images[0]}
+                name={item?.product[0]?.name}
+                price={item?.product[0]?.price}
+                initialQuantity={item?.quantity}
                 onRemove={handleRemoveItem}
                 onQuantityChange={handleQuantityChange}
               />

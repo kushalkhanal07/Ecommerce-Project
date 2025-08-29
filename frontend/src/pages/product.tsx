@@ -36,7 +36,7 @@ const Product = () => {
           </div>
         </div>
 
-        <div className="flex justify-center gap-x-5 mt-6">
+        <div className="flex flex-col gap-4 sm:flex-row items-center justify-center gap-x-5 mt-6">
           <Button className="bg-[#385C8E] max-w-[300px] w-full rounded-none">
             {" "}
             <Facebook /> Share on Facebook

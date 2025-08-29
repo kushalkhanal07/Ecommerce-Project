@@ -7,7 +7,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Key, LogIn, Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { listCart } from "@/service/cart";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Key,
+  Loader,
+  LogIn,
+  Menu,
+  Search,
+  ShoppingCart,
+  User,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -15,6 +26,23 @@ export default function Header() {
   const [show, setShow] = useState(false);
   function handleShow() {
     setShow((prev) => !prev);
+  }
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["customers"],
+    queryFn: listCart,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
   }
 
   return (
@@ -40,7 +68,7 @@ export default function Header() {
             <Link to="/cart" className="relative">
               <ShoppingCart size={18} />
               <span className="bg-red-600 absolute -top-2 px-[6px] text-white -right-3 rounded-full text-[0.8em]">
-                2
+                {data.length}
               </span>
             </Link>
 

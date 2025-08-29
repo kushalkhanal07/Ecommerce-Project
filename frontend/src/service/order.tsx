@@ -6,7 +6,8 @@ export async function getOrders() {
 }
 
 export async function addOrder(data: any) {
-  const res = await api.post("/order/create");
+  console.log(data);
+  const res = await api.post("/orders/create", data);
   return res.data;
 }
 

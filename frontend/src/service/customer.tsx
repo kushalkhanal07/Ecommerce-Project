@@ -7,6 +7,6 @@ export async function getAllCustomer() {
 }
 
 export async function getCustomer() {
-  const res = await api.get("/users/me");
+  const res = await axiosInstance.get("/users/me");
   return res.data;
 }

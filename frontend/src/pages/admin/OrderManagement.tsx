@@ -208,16 +208,21 @@ const OrderManagement = () => {
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>
                     <div>
-                      <p className="font-medium">{order.customerName}</p>
+                      <p className="font-medium">{order.user.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {order.customerEmail}
+                        {order.user.email}
                       </p>
                     </div>
                   </TableCell>
-                  <TableCell>{order.date}</TableCell>
-                  <TableCell>${order.total.toFixed(2)}</TableCell>
                   <TableCell>
-                    <Select
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>${order.totalAmount}</TableCell>
+                  <TableCell>
+                    <span className="inline-block border-red-600 border px-3 py-1 rounded-2xl text-red-500">
+                      {order.status}
+                    </span>
+                    {/* <Select
                       value={order.status.toLowerCase()}
                       onValueChange={(value) =>
                         updateOrderStatus(
@@ -237,7 +242,7 @@ const OrderManagement = () => {
                         <SelectItem value="shipped">Shipped</SelectItem>
                         <SelectItem value="delivered">Delivered</SelectItem>
                       </SelectContent>
-                    </Select>
+                    </Select> */}
                   </TableCell>
                   <TableCell>
                     <Dialog>
@@ -267,11 +272,13 @@ const OrderManagement = () => {
                               <div className="bg-muted/50 p-4 rounded-lg">
                                 <p>
                                   <strong>Name:</strong>{" "}
-                                  {selectedOrder.customerName}
+                                  <span className="capitalize">
+                                    {selectedOrder.user.name}
+                                  </span>
                                 </p>
                                 <p>
                                   <strong>Email:</strong>{" "}
-                                  {selectedOrder.customerEmail}
+                                  {selectedOrder.user.email}
                                 </p>
                                 <p>
                                   <strong>Shipping Address:</strong>{" "}
@@ -294,18 +301,15 @@ const OrderManagement = () => {
                                     >
                                       <div>
                                         <p className="font-medium">
-                                          {item.name}
+                                          {item.productName}
                                         </p>
                                         <p className="text-sm text-muted-foreground">
-                                          Size: {item.size} | Qty:{" "}
+                                          Price: ${item.price} | Qty:{" "}
                                           {item.quantity}
                                         </p>
                                       </div>
                                       <p className="font-medium">
-                                        $
-                                        {(item.price * item.quantity).toFixed(
-                                          2
-                                        )}
+                                        ${item.price * item.quantity}
                                       </p>
                                     </div>
                                   )
@@ -320,7 +324,7 @@ const OrderManagement = () => {
                                   Total:
                                 </span>
                                 <span className="text-lg font-semibold">
-                                  ${selectedOrder.total.toFixed(2)}
+                                  ${order.totalAmount}
                                 </span>
                               </div>
                             </div>
