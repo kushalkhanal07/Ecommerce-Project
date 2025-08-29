@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { listWishlist, removeWishlist } from "@/service/wishlist";
+import { getWishlist, removeWishlist } from "@/service/wishlist";
 import { toast } from "sonner";
 
 // Mock data for wishlist items
@@ -64,8 +64,8 @@ export default function Wishlist() {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["customers"],
-    queryFn: listWishlist,
+    queryKey: ["wishlist"],
+    queryFn: getWishlist,
   });
 
   const mutation = useMutation({
@@ -127,8 +127,8 @@ export default function Wishlist() {
               >
                 <div className="relative">
                   <img
-                    src={item?.product[0]?.images[0]}
-                    alt={item?.product[0]?.name}
+                    src={item?.product?.images[0]}
+                    alt={item?.product?.name}
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute top-2 right-2">
@@ -154,13 +154,13 @@ export default function Wishlist() {
                 </div>
                 <CardContent className="p-4">
                   <p className="font-semibold text-[1.3em]">
-                    {item?.product[0]?.description}
+                    {item?.product?.description}
                   </p>
                   <p className="text-sm text-gray-500 mb-1">
-                    Brand: {item?.product[0]?.brand}
+                    Brand: {item?.product?.brand}
                   </p>
                   <h3 className="font-semibold mb-2 line-clamp-1">
-                    {item?.product[0]?.name}
+                    {item?.product?.name}
                   </h3>
 
                   <div className="flex items-center mb-2">
@@ -175,7 +175,7 @@ export default function Wishlist() {
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="font-bold text-lg">
-                        ${item?.product[0]?.price}
+                        ${item?.product?.price}
                       </span>
                       {item.originalPrice > item.price && (
                         <span className="text-sm text-gray-500 line-through ml-2">

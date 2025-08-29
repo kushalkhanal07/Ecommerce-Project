@@ -38,9 +38,9 @@ export default function Cards({
 
   const wishlistMutation = useMutation({
     mutationFn: addWishlist,
-    onSuccess: () => {
-      console.log("wishlist added successfully");
-      toast.success("wishlist added successfully", {
+    onSuccess: (data) => {
+      console.log(data)
+      toast.success(data.message, {
         description: "Successfull.",
       });
     },
