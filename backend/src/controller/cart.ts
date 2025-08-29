@@ -41,6 +41,9 @@ export const addToCart = async (req: Request, res: Response) => {
     const cartExist = await cartRepo.findOne({
       where: {
         user: user,
+        product: {
+          id: productId,
+        }
       },
     });
 
