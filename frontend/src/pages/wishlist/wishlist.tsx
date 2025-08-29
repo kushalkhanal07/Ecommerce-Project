@@ -92,6 +92,8 @@ export default function Wishlist() {
     return <div>{error?.message}</div>;
   }
 
+  console.log(data);
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="text-center mb-10">
@@ -118,15 +120,15 @@ export default function Wishlist() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {data.map((item: any) => (
+            {data?.map((item: any) => (
               <Card
                 key={item.id}
                 className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="relative">
                   <img
-                    src={item.product.images[0]}
-                    alt={item.product.name}
+                    src={item?.product[0]?.images[0]}
+                    alt={item?.product[0]?.name}
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute top-2 right-2">
@@ -134,7 +136,7 @@ export default function Wishlist() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 rounded-full bg-white/80 hover:bg-white"
-                      onClick={() => mutation.mutate(item.id)}
+                      onClick={() => mutation.mutate(item?.id)}
                     >
                       <Trash2 className="h-4 w-4 text-red-500" />
                     </Button>
@@ -152,13 +154,13 @@ export default function Wishlist() {
                 </div>
                 <CardContent className="p-4">
                   <p className="font-semibold text-[1.3em]">
-                    {item.product.description}
+                    {item?.product[0]?.description}
                   </p>
                   <p className="text-sm text-gray-500 mb-1">
-                    Brand: {item.product.brand}
+                    Brand: {item?.product[0]?.brand}
                   </p>
                   <h3 className="font-semibold mb-2 line-clamp-1">
-                    {item.product.name}
+                    {item?.product[0]?.name}
                   </h3>
 
                   <div className="flex items-center mb-2">
@@ -173,7 +175,7 @@ export default function Wishlist() {
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="font-bold text-lg">
-                        ${item.product.price}
+                        ${item?.product[0]?.price}
                       </span>
                       {item.originalPrice > item.price && (
                         <span className="text-sm text-gray-500 line-through ml-2">

@@ -31,7 +31,6 @@ const AdminLogin = () => {
   const mutation = useMutation({
     mutationFn: adminLogin,
     onSuccess: (data) => {
-      console.log(data);
       localStorage.setItem("admin", data.token);
 
       toast.success("Admin Login Successful", {
@@ -42,7 +41,6 @@ const AdminLogin = () => {
       }, 1000);
     },
     onError: (err) => {
-      console.log(err.message);
       toast.error("Login Failed", {
         description: "Invalid credentials. Please try again.",
       });

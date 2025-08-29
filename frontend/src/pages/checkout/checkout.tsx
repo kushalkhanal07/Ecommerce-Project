@@ -680,22 +680,22 @@ const Checkout = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                {datas.map(({ id, quantity, product }: any) => {
+                {datas?.map(({ id, quantity, product }: any) => {
                   return (
                     <div key={id} className="flex justify-between items-center">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                          <img src={product[0].images} />
+                          <img src={product[0]?.images} />
                         </div>
                         <div>
-                          <p className="font-medium">{product[0].name}</p>
+                          <p className="font-medium">{product[0]?.name}</p>
                           <p className="text-sm text-gray-500">
                             Qty: {quantity}
                           </p>
                         </div>
                       </div>
                       <span className="font-medium">
-                        ${quantity * product[0].price}
+                        ${quantity * product[0]?.price}
                       </span>
                     </div>
                   );
@@ -710,7 +710,9 @@ const Checkout = () => {
                   <span>
                     $
                     {datas.reduce((acc: number, current: any) => {
-                      return acc + current.quantity * current.product[0].price;
+                      return (
+                        acc + current?.quantity * current?.product[0]?.price
+                      );
                     }, 0)}
                   </span>
                 </div>
