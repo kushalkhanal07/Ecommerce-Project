@@ -14,6 +14,11 @@ export async function getProducts() {
   return res.data.data;
 }
 
+export async function getProductBySlug(id: any) {
+  const res = await api.get(`/products/by-slug/${id}`);
+  return res.data.data;
+}
+
 export async function deleteProducts(id: any) {
   const res = await api.delete(`/products/${id}`);
   return res.data;

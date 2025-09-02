@@ -2,11 +2,10 @@ import Cards from "@/components/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import data from "@/data/shoeData.json";
-import { listCart } from "@/service/cart";
 import { getProducts } from "@/service/products";
 import { useQuery } from "@tanstack/react-query";
 import { Loader, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 export default function Home() {
   const image = ["/image1.png", "/image2.png", "/image3.png"];
 
@@ -63,17 +62,20 @@ export default function Home() {
                     brand,
                     rating,
                     images,
+                    slug
                   }: any) => (
-                    <Cards
-                      key={id}
-                      id={id}
-                      shoeType={name}
-                      price={price}
-                      description={description}
-                      brand={brand}
-                      rating={rating}
-                      image={images[0]}
-                    />
+                    <Link to={`/product/${slug}`}>
+                      <Cards
+                        key={id}
+                        id={id}
+                        shoeType={name}
+                        price={price}
+                        description={description}
+                        brand={brand}
+                        rating={rating}
+                        image={images[0]}
+                      />
+                    </Link>
                   )
                 )}
               </div>

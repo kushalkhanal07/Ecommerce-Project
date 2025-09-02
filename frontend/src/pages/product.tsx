@@ -2,7 +2,7 @@ import BestSellerCard from "@/components/BestSellerCard";
 import ProductDetails from "@/components/ProductDetails";
 import ProductGallery from "@/components/ProductGallery";
 import { Button } from "@/components/ui/button";
-import { Facebook, Star, Twitter } from "lucide-react";
+import { Facebook, Loader, Star, Twitter } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Cards from "@/components/card";
 import {
@@ -12,9 +12,30 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getProductBySlug } from "@/service/products";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 const Product = () => {
   const images = ["shoe1.png", "shoe2.png", "shoe3.png", "shoe4.png"];
+  const { id } = useParams()
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["product", "slug"],
+    queryFn: () => getProductBySlug(id),
+  });
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[600px]">
+        <Loader size={25} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
+  console.log(data)
+
   return (
     <div className="min-h-screen">
       <p className="mt-6 text-center text-blue-400 text-[1.2em]">Hot Deal</p>
@@ -22,12 +43,12 @@ const Product = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Product Gallery - Left Column */}
           <div className="lg:col-span-4">
-            <ProductGallery images={images} />
+            <ProductGallery images={data.images} />
           </div>
 
           {/* Product Details - Middle Column */}
           <div className="lg:col-span-5">
-            <ProductDetails />
+            <ProductDetails {...data} />
           </div>
 
           {/* Best Seller - Right Column */}

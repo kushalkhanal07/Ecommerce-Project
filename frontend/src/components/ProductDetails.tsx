@@ -10,7 +10,7 @@ import {
 import { Star, Minus, Plus, Facebook, Twitter, Heart } from "lucide-react";
 import { Badge } from "./ui/badge";
 
-const ProductDetails = () => {
+const ProductDetails = ({ brand, description, name, price, size, slug, stock }: any) => {
   const [quantity, setQuantity] = useState(2);
   const [selectedColor, setSelectedColor] = useState("blue");
   const [selectedSize, setSelectedSize] = useState("XS");
@@ -34,8 +34,8 @@ const ProductDetails = () => {
     <div className="space-y-6">
       {/* Product title */}
       <div>
-        <h1 className="text-2xl font-semibold text-foreground mb-2">
-          MEN CASUAL
+        <h1 className="text-2xl font-semibold text-foreground mb-2 flex flex-col">
+          {name} <span className="text-sm my-3">Brand: {brand}</span>
         </h1>
 
         {/* Rating */}
@@ -44,9 +44,8 @@ const ProductDetails = () => {
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-4 h-4 ${
-                  i < 4 ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                }`}
+                className={`w-4 h-4 ${i < 4 ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                  }`}
               />
             ))}
           </div>
@@ -58,9 +57,9 @@ const ProductDetails = () => {
 
         {/* Price */}
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl font-bold text-primary">$299.43</span>
+          <span className="text-2xl font-bold text-primary">${price}</span>
           <span className="text-lg text-price-original line-through">
-            $394.33
+            $0
           </span>
           <Badge variant="destructive" className="bg-price-discount">
             24% Off
@@ -72,11 +71,11 @@ const ProductDetails = () => {
       <div className="space-y-4 text-sm">
         <div className="flex justify-between">
           <span className="font-medium">Availability:</span>
-          <span className="text-success">In stock</span>
+          <span className="text-success">In stock : {stock}</span>
         </div>
         <div className="flex justify-between">
           <span className="font-medium">Category:</span>
-          <span>Accessories</span>
+          <span className="capitalize">{slug}</span>
         </div>
         <div className="text-success font-medium">Free shipping</div>
       </div>
@@ -89,11 +88,10 @@ const ProductDetails = () => {
             <button
               key={color.name}
               onClick={() => setSelectedColor(color.name)}
-              className={`w-8 h-8 rounded-full border-2 transition-all ${
-                selectedColor === color.name
-                  ? "ring-2 ring-primary ring-offset-2"
-                  : "hover:ring-1 hover:ring-gray-400"
-              }`}
+              className={`w-8 h-8 rounded-full border-2 transition-all ${selectedColor === color.name
+                ? "ring-2 ring-primary ring-offset-2"
+                : "hover:ring-1 hover:ring-gray-400"
+                }`}
               style={{ backgroundColor: color.value }}
               title={color.name}
             />

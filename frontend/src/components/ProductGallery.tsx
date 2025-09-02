@@ -6,7 +6,6 @@ interface ProductGalleryProps {
 
 const ProductGallery = ({ images }: ProductGalleryProps) => {
   const galleryImages = images || [];
-  console.log(galleryImages);
   const [selectedImage, setSelectedImage] = useState(0);
 
   return (
@@ -22,15 +21,14 @@ const ProductGallery = ({ images }: ProductGalleryProps) => {
 
       {/* Thumbnail images */}
       <div className="grid grid-cols-4 gap-2">
-        {galleryImages.map((image, index) => (
+        {galleryImages?.map((image, index) => (
           <button
             key={index}
             onClick={() => setSelectedImage(index)}
-            className={`aspect-square bg-card rounded border overflow-hidden transition-all ${
-              selectedImage === index
-                ? "ring-2 ring-primary"
-                : "hover:ring-1 hover:ring-muted-foreground/50"
-            }`}
+            className={`aspect-square bg-card rounded border overflow-hidden transition-all ${selectedImage === index
+              ? "ring-2 ring-primary"
+              : "hover:ring-1 hover:ring-muted-foreground/50"
+              }`}
           >
             <img
               src={image}

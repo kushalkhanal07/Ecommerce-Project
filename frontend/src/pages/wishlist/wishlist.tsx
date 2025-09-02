@@ -92,8 +92,6 @@ export default function Wishlist() {
     return <div>{error?.message}</div>;
   }
 
-  console.log(data);
-
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="text-center mb-10">

@@ -141,8 +141,8 @@ const Cart = () => {
           {data?.length ? (
             data?.map((item: any) => (
               <CartItem
-                key={item.id}
-                id={item.id}
+                key={item?.product[0]?.id}
+                id={item?.id}
                 image={item?.product[0]?.images[0]}
                 name={item?.product[0]?.name}
                 price={item?.product[0]?.price}
