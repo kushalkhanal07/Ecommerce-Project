@@ -48,7 +48,7 @@ export const addToCart = async (req: Request, res: Response) => {
     });
 
     if (cartExist) {
-      cartExist.quantity += quantity;
+      cartExist.quantity = quantity;
       cart = cartExist;
     } else {
       const product = await productRepo.findOne({
@@ -161,6 +161,7 @@ export const deleteFromCart = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;
     const productId = req.params.id;
+    const cartId = req.params.id;
 
     if (!userId) {
       return res.status(401).json({
@@ -173,12 +174,11 @@ export const deleteFromCart = async (req: Request, res: Response) => {
 
     const cart = await cartRepo.findOne({
       where: {
-        user: { id: userId },
-        product: { id: productId },
+        id: cartId,
       },
       relations: ["user", "product"], // ensures user/product objects are loaded
     });
-
+    console.log("Cart found:", cart);
     if (!cart) {
       return res.status(404).json({
         success: false,

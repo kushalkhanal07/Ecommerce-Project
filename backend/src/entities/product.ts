@@ -76,8 +76,11 @@ export class Product {
   })
   stock!: number;
 
-  @ManyToOne(() => Cart, (cart) => cart.product)
-  cart!: Cart;
+@ManyToOne(() => Cart, (cart) => cart.product, {
+  onDelete: "SET NULL",
+  nullable: true
+})
+cart!: Cart | null;
 
   @ManyToOne(() => Wishlist, (wishlist) => wishlist.product)
   wishlist!: Wishlist;
