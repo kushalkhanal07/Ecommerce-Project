@@ -727,7 +727,9 @@ const Checkout = () => {
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total</span>
-                  <span>$507.56</span>
+                  <span>${datas.reduce((acc: number, current: any) => {
+                    return acc + current.quantity * current.product[0]?.price;
+                  }, 0)}</span>
                 </div>
               </div>
 

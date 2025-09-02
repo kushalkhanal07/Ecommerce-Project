@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AddToCart } from "@/service/cart";
 import { addWishlist } from "@/service/wishlist";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 export default function Cards({
   id,
   shoeType,
@@ -19,6 +20,7 @@ export default function Cards({
   brand,
   rating,
   image,
+  slug
 }: any) {
   const mutation = useMutation({
     mutationFn: AddToCart,
@@ -97,7 +99,10 @@ export default function Cards({
 
       <CardFooter className="-mt-3 px-2">
         <div className="flex flex-col gap-4 flex-wrap">
-          <p className="text-[1.2em] font-semibold">{description}</p>
+          <Link to={`/product/${slug}`}>
+            <p className="text-[1.2em] font-semibold">{description}</p>
+
+          </Link>
           <p className="text-[#4440FF]">Price : ${price}</p>
           <p className="text-red-500">Brand: {brand}</p>
         </div>

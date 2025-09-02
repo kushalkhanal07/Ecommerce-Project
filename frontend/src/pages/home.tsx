@@ -64,18 +64,18 @@ export default function Home() {
                     images,
                     slug
                   }: any) => (
-                    <Link to={`/product/${slug}`}>
-                      <Cards
-                        key={id}
-                        id={id}
-                        shoeType={name}
-                        price={price}
-                        description={description}
-                        brand={brand}
-                        rating={rating}
-                        image={images[0]}
-                      />
-                    </Link>
+                    <Cards
+                      key={id}
+                      id={id}
+                      slug={slug}
+                      shoeType={name}
+                      price={price}
+                      description={description}
+                      brand={brand}
+                      rating={rating}
+                      image={images[0]}
+                    />
+
                   )
                 )}
               </div>

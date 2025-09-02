@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { removeCart } from "@/service/cart";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X, Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ export const CartItem = ({
   onQuantityChange,
 }: CartItemProps) => {
   const [quantity, setQuantity] = useState(initialQuantity);
+  const queryClient = useQueryClient();
 
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -38,6 +39,7 @@ export const CartItem = ({
     mutationFn: removeCart,
     onSuccess: () => {
       toast.success("cart removed successfully");
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (err) => {
       toast.success("cart removed successfully");

@@ -29,7 +29,7 @@ export default function Header() {
   }
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["customers"],
+    queryKey: ["cart"],
     queryFn: listCart,
   });
 
@@ -130,7 +130,7 @@ export default function Header() {
         </div>
         <div className="flex gap-x-6 sm:gap-x-12 justify-between flex-1 ">
           <Link to="/">HOME</Link>
-          <Link to="/product">SNEAKERS</Link>
+          {/* <Link to="/product">SNEAKERS</Link> */}
           <Link to="/contact">CONTACT</Link>
         </div>
       </div>

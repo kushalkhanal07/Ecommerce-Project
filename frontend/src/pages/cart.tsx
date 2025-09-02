@@ -102,7 +102,7 @@ const Cart = () => {
   });
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["customers"],
+    queryKey: ["cart"],
     queryFn: listCart,
   });
 
